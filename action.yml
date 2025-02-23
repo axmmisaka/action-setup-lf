@@ -28,17 +28,18 @@ runs:
     - name: Checkout LF Install Script repo
       uses: actions/checkout@v4
       with:
-        repository: 'lf-lang/installation'
+        repository: 'axmmisaka/installation'
+        ref: 'gh-token-debug'
         path: 'tmp/installation'
     - name: Install LFC (linux)
       if: runner.os == 'Linux'
       run: |
-        bash ./tmp/installation/install.sh cli ${{ inputs.lfc-version }}
+        bash ./tmp/installation/install.sh cli ${{ inputs.lfc-version }} --gh-token=${{ github.token }}
       shell: bash
     - name: Install LFC (macOS)
       if: runner.os == 'macOS'
       run: |
-        bash ./tmp/installation/install.sh cli ${{ inputs.lfc-version }} --prefix=$HOME/.local && break
+        bash ./tmp/installation/install.sh cli ${{ inputs.lfc-version }} --gh-token=${{ github.token }} --prefix=$HOME/.local
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       shell: bash
     - name: Install lingo
@@ -49,3 +50,4 @@ runs:
           cargo install lingua-franca --version ${{ inputs.lingo-version }}
         fi
       shell: bash
+
